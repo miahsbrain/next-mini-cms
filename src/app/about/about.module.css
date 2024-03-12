@@ -39,8 +39,21 @@
     position: relative;
     width: 200px;
     height: 400px;
+    z-index: -2;
 }
 
 .img {
     object-fit: contain;
+}
+
+@media screen and (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .boxes {
+        flex-direction: column;
+        gap: 4rem;
+    }
 }
