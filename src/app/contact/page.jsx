@@ -1,5 +1,7 @@
+// import HydrationTest from '@/components/HydrationTest'
 import styles from './contact.module.css'
 import Image from 'next/image'
+
 
 export default function page() {
   return (
@@ -12,7 +14,7 @@ export default function page() {
           <input type='text' placeholder='Name and surname'></input>
           <input type='text' placeholder='Email address'></input>
           <input type='text' placeholder='Phone number (optional)'></input>
-          <textarea name="" id="" cols="30" rows="10"></textarea>
+          <textarea name="message" id="message" cols={30} rows={10}></textarea>
           <button>Send</button>
         </form>
       </div>

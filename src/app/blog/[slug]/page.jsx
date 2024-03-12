@@ -1,27 +1,46 @@
+import PostUser from '@/components/postUser/PostUser'
 import styles from './singlepage.module.css'
 import Image from 'next/image'
+import { Suspense } from 'react'
+import { getPost } from '@/lib/data'
 
-export default function page() {
+
+// FETCH DATA WITH API
+// const getData = async ( id ) => {
+//   const res = await fetch(`https://jsonplaceholder.typicode.com/posts/${id}`, { next: { revalidate: 3600 } })
+//   if (!res.ok) {
+//     throw new Error('Failed to fetch data')
+//   }
+//   return res.json()
+// }
+
+export default async function page({ params }) {
+  const slug = params.slug
+  const data = await getPost(slug)
+
+  console.log(data);
+  
   return (
     <div className={styles.container}>
       <div className={styles.imageContainer}>
-        <Image src={'https://images.pexels.com/photos/17158016/pexels-photo-17158016/free-photo-of-japanese-zen-garden-at-the-gardens-of-the-world-marzahn-berlin-germany.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'} fill alt="image 1" className={styles.heroImg} />
+        <Image src={data.img} fill alt="image 1" className={styles.heroImg} />
       </div>
       <div className={styles.textContainer}>
-        <h1 className={styles.title}>Title</h1>
+        <h1 className={styles.title}>{data.title}</h1>
         <div className={styles.detail}>
-          <Image src={'https://images.pexels.com/photos/17158016/pexels-photo-17158016/free-photo-of-japanese-zen-garden-at-the-gardens-of-the-world-marzahn-berlin-germany.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'} width={50} height={50} alt="avatar" className={styles.avatar} />
-          <div className={styles.detailText}>
-            <span className={styles.detailTitle}>Author</span>
-            <span className={styles.detailValue}>Jeremiah Agware</span>
-          </div>
+          {data.img && <Image src={data.img} width={50} height={50} alt="avatar" className={styles.avatar} />}
+          
+          <Suspense fallback={<div>Loading...</div>}>
+            <PostUser user={data.userId} />
+          </Suspense>
+
           <div className={styles.detailText}>
             <span className={styles.detailTitle}>Published</span>
-            <span className={styles.detailValue}>01.01.2024</span>
+            <span className={styles.detailValue}>{data.createdAt}</span>
           </div>
         </div>
         <div className={styles.content}>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Aliquid blanditiis dolorum incidunt, voluptas, possimus eos quos placeat distinctio, maiores explicabo tempore nam exercitationem et consequuntur adipisci. Enim, commodi ipsam dolores ipsa ducimus aliquid hic ullam sed vitae impedit consequatur! Iste nam deserunt architecto corrupti eveniet itaque. Iure adipisci explicabo deserunt!
+          {data.desc}
         </div>
       </div>
     </div>
